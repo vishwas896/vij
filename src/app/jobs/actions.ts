@@ -2,34 +2,48 @@
 
 import { z } from "zod";
 
-const PostJobSchema = z.object({
-  title: z.string(),
-  company: z.string(),
-  location: z.string(),
-  type: z.enum(["Full-time", "Part-time", "Contract", "Volunteer"]),
-  description: z.string(),
-  companyEmail: z.string().email(),
+const SearchJobsSchema = z.object({
+  what: z.string().optional(),
+  where: z.string().optional(),
 });
 
-export async function postJobAction(input: z.infer<typeof PostJobSchema>) {
+export async function searchJobs(input: z.infer<typeof SearchJobsSchema>) {
+    const validation = SearchJobsSchema.safeParse(input);
+
+    if (!validation.success) {
+        return { success: false, error: "Invalid search query.", jobs: [] };
+    }
+
+    const { what, where } = validation.data;
+    const appId = process.env.ADZUNA_APP_ID;
+    const appKey = process.env.ADZUNA_APP_KEY;
+
+    if (!appId || !appKey) {
+        console.error("Adzuna API credentials are not set in .env file.");
+        return { success: false, error: "Server configuration error.", jobs: [] };
+    }
+
+    const searchParams = new URLSearchParams({
+        app_id: appId,
+        app_key: appKey,
+        results_per_page: '12',
+        what: what || 'social impact', // Default search to social impact
+        where: where || 'india', // Default location to India
+        content_type: 'application/json'
+    });
+
     try {
-        const validation = PostJobSchema.safeParse(input);
-        if (!validation.success) {
-            return { success: false, error: "Invalid input." };
+        const response = await fetch(`https://api.adzuna.com/v1/api/jobs/in/search/1?${searchParams.toString()}`);
+
+        if (!response.ok) {
+            console.error('Adzuna API error:', response.status, await response.text());
+            return { success: false, error: 'Failed to fetch jobs from the provider.', jobs: [] };
         }
 
-        // In a real application, you would:
-        // 1. Save the job to a "pending" state in your database.
-        // 2. Generate a unique verification token.
-        // 3. Send an email to `companyEmail` with a link containing the verification token.
-        // 4. When the user clicks the link, verify the token and mark the job as "active".
-
-        console.log("Simulating job verification for:", validation.data);
-
-        return { success: true };
-
+        const data = await response.json();
+        return { success: true, jobs: data.results || [] };
     } catch (error) {
-        console.error("Error in postJobAction:", error);
-        return { success: false, error: "An unexpected error occurred. Failed to post job." };
+        console.error("Error fetching jobs from Adzuna:", error);
+        return { success: false, error: "An unexpected error occurred while fetching jobs.", jobs: [] };
     }
 }
