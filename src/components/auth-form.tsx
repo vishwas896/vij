@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useTransition, useState, useEffect } from "react";
+import { useTransition, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -24,9 +24,9 @@ import {
     createUserWithEmailAndPassword, 
     signInWithEmailAndPassword,
     signInWithPopup,
-    RecaptchaVerifier,
-    signInWithPhoneNumber,
-    ConfirmationResult
+    // RecaptchaVerifier, // Removed
+    // signInWithPhoneNumber, // Removed
+    // ConfirmationResult // Removed
 } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { Separator } from "./ui/separator";
@@ -52,9 +52,9 @@ type SignupSchema = z.infer<typeof signupSchema>;
 export function AuthForm({ isSignup = false }: { isSignup?: boolean }) {
     const [isPending, startTransition] = useTransition();
     const [isPhoneAuth, setIsPhoneAuth] = useState(false);
-    const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult | null>(null);
-    const [otp, setOtp] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState("");
+    // const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult | null>(null); // Removed
+    // const [otp, setOtp] = useState(""); // Removed
+    // const [phoneNumber, setPhoneNumber] = useState(""); // Removed
     const { toast } = useToast();
     const router = useRouter();
 
@@ -67,16 +67,7 @@ export function AuthForm({ isSignup = false }: { isSignup?: boolean }) {
         },
     });
 
-    useEffect(() => {
-        if (!window.recaptchaVerifier) {
-            window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-              'size': 'invisible',
-              'callback': (response: any) => {
-                // reCAPTCHA solved, allow signInWithPhoneNumber.
-              }
-            });
-        }
-    }, []);
+    // Removed useEffect for RecaptchaVerifier
 
     const handleGoogleSignIn = async () => {
         startTransition(async () => {
@@ -97,44 +88,7 @@ export function AuthForm({ isSignup = false }: { isSignup?: boolean }) {
         })
     }
     
-    const handlePhoneSignIn = async () => {
-        if (!phoneNumber) {
-             toast({ title: "Phone number is required.", variant: 'destructive' });
-             return;
-        }
-        startTransition(async () => {
-            try {
-                const verifier = window.recaptchaVerifier;
-                const result = await signInWithPhoneNumber(auth, `+${phoneNumber}`, verifier);
-                setConfirmationResult(result);
-                toast({ title: "OTP Sent", description: "Please check your phone for the verification code."});
-            } catch (error: any) {
-                console.error("Phone auth error:", error);
-                 toast({ title: "Failed to send OTP", description: error.message, variant: 'destructive' });
-            }
-        });
-    }
-
-    const handleOtpVerify = async () => {
-        if (!otp) {
-            toast({ title: "OTP is required.", variant: 'destructive' });
-            return;
-        }
-         if (!confirmationResult) {
-            toast({ title: "Please request an OTP first.", variant: 'destructive' });
-            return;
-        }
-        startTransition(async () => {
-            try {
-                await confirmationResult.confirm(otp);
-                toast({ title: "Signed In!", description: "You have successfully signed in with your phone." });
-                router.push("/profile");
-            } catch (error: any) {
-                 toast({ title: "Invalid OTP", description: "The OTP you entered is incorrect. Please try again.", variant: 'destructive' });
-            }
-        });
-    }
-
+    // Removed handlePhoneSignIn and handleOtpVerify
 
     function onEmailSubmit(values: LoginSchema | SignupSchema) {
         startTransition(async () => {
@@ -195,33 +149,9 @@ export function AuthForm({ isSignup = false }: { isSignup?: boolean }) {
                  
                  {isPhoneAuth ? (
                     <div className="space-y-4">
-                        {!confirmationResult ? (
-                             <>
-                                <div className="space-y-2">
-                                     <Label htmlFor="phone-number" className="flex items-center"><Phone className="mr-2 h-4 w-4" />Phone Number</Label>
-                                     <Input 
-                                        id="phone-number" 
-                                        type="tel" 
-                                        placeholder="911234567890" 
-                                        value={phoneNumber} 
-                                        onChange={(e) => setPhoneNumber(e.target.value)}
-                                     />
-                                </div>
-                                <Button className="w-full" onClick={handlePhoneSignIn} disabled={isPending}>
-                                     {isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Send OTP'}
-                                </Button>
-                             </>
-                        ) : (
-                            <>
-                                <div className="space-y-2">
-                                    <Label htmlFor="otp" className="flex items-center"><MessageCircle className="mr-2 h-4 w-4" />Enter OTP</Label>
-                                    <Input id="otp" type="text" placeholder="123456" value={otp} onChange={(e) => setOtp(e.target.value)}/>
-                                </div>
-                                <Button className="w-full" onClick={handleOtpVerify} disabled={isPending}>
-                                     {isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Verify OTP'}
-                                </Button>
-                            </>
-                        )}
+                        <div className="text-center p-4 bg-yellow-50 border border-yellow-200 rounded-md">
+                            <p className="text-sm text-yellow-800">Phone sign-in is temporarily disabled.</p>
+                        </div>
                         <Button variant="link" size="sm" onClick={() => setIsPhoneAuth(false)}>Use Email/Password instead</Button>
                     </div>
                  ) : (
@@ -307,10 +237,4 @@ export function AuthForm({ isSignup = false }: { isSignup?: boolean }) {
             </CardFooter>
         </Card>
     );
-}
-
-declare global {
-  interface Window {
-    recaptchaVerifier: RecaptchaVerifier;
-  }
 }
