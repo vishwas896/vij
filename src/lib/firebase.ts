@@ -1,7 +1,7 @@
 
 import { initializeApp, getApps, getApp, FirebaseApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
-import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "firebase/app-check";
+import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC9_UHK-HyNsExr7CPN0Nu8lbHwgH4Fx0g",
@@ -12,26 +12,23 @@ const firebaseConfig = {
   appId: "1:302997831175:web:a315f63d18d2c681f9b4a2"
 };
 
-function createFirebaseApp(): FirebaseApp {
-    if (getApps().length > 0) {
-        return getApp();
-    }
+let app: FirebaseApp;
+let auth: ReturnType<typeof getAuth>;
 
-    const app = initializeApp(firebaseConfig);
-
-    // Initialize App Check only on the client side
-    if (typeof window !== 'undefined') {
-        // Pass your reCAPTCHA v3 site key (public key) to activate(). Make sure this
-        // key is the same one you use in your script tag in `layout.tsx`.
-        initializeAppCheck(app, {
-            provider: new ReCaptchaEnterpriseProvider("6Lfl0qMrAAAAAGMpdaNCTU958pgXu1e6P9RuNoRw"),
-            isTokenAutoRefreshEnabled: true
-        });
-    }
-    return app;
+if (getApps().length === 0) {
+  app = initializeApp(firebaseConfig);
+  if (typeof window !== 'undefined') {
+    // Initialize App Check with reCAPTCHA v3
+    initializeAppCheck(app, {
+      provider: new ReCaptchaV3Provider('6LeJ0qMrAAAAAIp_2xX_Zt2hY4eJ_Yj2sWqN7uJ3'),
+      isTokenAutoRefreshEnabled: true
+    });
+  }
+} else {
+  app = getApp();
 }
 
+auth = getAuth(app);
+const googleProvider = new GoogleAuthProvider();
 
-export const app = createFirebaseApp();
-export const auth = getAuth(app);
-export const googleProvider = new GoogleAuthProvider();
+export { app, auth, googleProvider };
