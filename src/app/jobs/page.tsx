@@ -64,9 +64,6 @@ export default function JobsPage() {
                         Find your next role in the social impact sector, powered by Adzuna & Jooble.
                     </p>
                 </div>
-                 <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
-                    <Link href="/jobs/post-a-job">Post a Job</Link>
-                </Button>
             </div>
 
             <Card className="mb-8 shadow-md">

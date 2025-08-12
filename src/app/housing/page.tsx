@@ -121,9 +121,6 @@ export default function HousingPage() {
                         Find housing and essential services tailored for the social impact community.
                     </p>
                 </div>
-                 <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
-                    <Link href="/housing/add">Add a Listing</Link>
-                </Button>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <aside className="md:col-span-1">
