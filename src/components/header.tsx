@@ -13,6 +13,7 @@ const navLinks = [
     { href: "/services", label: "Services" },
     { href: "/housing", label: "Housing" },
     { href: "/resume-builder", label: "AI Resume Builder" },
+    { href: "/contribution", label: "Contribution" },
 ];
 
 export function Header() {
