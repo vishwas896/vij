@@ -1,77 +1,89 @@
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Home, MapPin, BedDouble, Bath } from "lucide-react";
+import { Home, MapPin, BedDouble, Bath, Utensils, Box } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
-const mockHousing = [
+const mockListings = [
     {
         title: "Co-living Space for Changemakers",
         location: "Brooklyn, NY",
         price: "$1,200/month",
-        type: "Shared Room",
+        category: "Shared Room",
         details: "2 Bed, 2 Bath",
         imageUrl: "https://placehold.co/600x400.png?1",
-        aiHint: "modern apartment"
+        aiHint: "modern apartment",
+        icon: <BedDouble className="h-4 w-4"/>
+    },
+    {
+        title: "Healthy Tiffin Service",
+        location: "Oakland, CA",
+        price: "$15/meal",
+        category: "Tiffin Service",
+        details: "Daily Lunch & Dinner",
+        imageUrl: "https://placehold.co/600x400.png?7",
+        aiHint: "meal prep containers",
+        icon: <Utensils className="h-4 w-4"/>
     },
     {
         title: "Quiet Studio Near Downtown",
         location: "Portland, OR",
         price: "$950/month",
-        type: "Studio",
+        category: "Studio",
         details: "1 Bed, 1 Bath",
         imageUrl: "https://placehold.co/600x400.png?2",
-        aiHint: "cozy studio"
+        aiHint: "cozy studio",
+        icon: <Home className="h-4 w-4"/>
+    },
+     {
+        title: "Weekly Lunch Box Subscription",
+        location: "Remote",
+        price: "$75/week",
+        category: "Lunch Box",
+        details: "5 meals/week",
+        imageUrl: "https://placehold.co/600x400.png?8",
+        aiHint: "healthy lunchbox",
+        icon: <Box className="h-4 w-4"/>
     },
     {
         title: "Affordable Room in Group House",
         location: "Oakland, CA",
         price: "$800/month",
-        type: "Private Room",
+        category: "Private Room",
         details: "4 Bed, 2 Bath",
         imageUrl: "https://placehold.co/600x400.png?3",
-        aiHint: "suburban house"
+        aiHint: "suburban house",
+        icon: <BedDouble className="h-4 w-4"/>
     },
     {
-        title: "Subsidized Artist Lofts",
-        location: "Detroit, MI",
-        price: "Income-based",
-        type: "Loft",
-        details: "1 Bed, 1 Bath",
-        imageUrl: "https://placehold.co/600x400.png?4",
-        aiHint: "industrial loft"
-    },
-     {
-        title: "Family-friendly Community Housing",
+        title: "Event Catering for Nonprofits",
         location: "Atlanta, GA",
-        price: "$1,500/month",
-        type: "Apartment",
-        details: "3 Bed, 2 Bath",
-        imageUrl: "https://placehold.co/600x400.png?5",
-        aiHint: "apartment complex"
-    },
-    {
-        title: "Eco-Village Tiny Home",
-        location: "Asheville, NC",
-        price: "$700/month",
-        type: "Tiny Home",
-        details: "1 Bed, 1 Bath",
-        imageUrl: "https://placehold.co/600x400.png?6",
-        aiHint: "tiny house"
+        price: "Varies",
+        category: "Catering",
+        details: "Up to 100 guests",
+        imageUrl: "https://placehold.co/600x400.png?9",
+        aiHint: "catering buffet",
+        icon: <Utensils className="h-4 w-4"/>
     },
 ];
 
 export default function HousingPage() {
     return (
         <div className="container mx-auto px-4 py-12 md:px-6">
-            <div className="text-center mb-12">
-                <h1 className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl text-primary">Housing Opportunities</h1>
-                <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
-                    A preview of housing options tailored for those in the social impact sector.
-                </p>
+            <div className="flex flex-col items-center justify-between gap-4 text-center mb-12 md:flex-row md:text-left">
+                 <div>
+                    <h1 className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl text-primary">Housing & Services</h1>
+                    <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
+                        Find housing and essential services tailored for the social impact community.
+                    </p>
+                </div>
+                 <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
+                    <Link href="/housing/add">Add a Listing</Link>
+                </Button>
             </div>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {mockHousing.map((item, index) => (
+                {mockListings.map((item, index) => (
                     <Card key={index} className="flex flex-col overflow-hidden group hover:shadow-xl transition-shadow duration-300">
                          <CardHeader className="p-0">
                             <Image
@@ -84,15 +96,15 @@ export default function HousingPage() {
                             />
                         </CardHeader>
                         <CardContent className="p-6 flex-grow">
-                             <Badge variant="secondary" className="mb-2">{item.type}</Badge>
+                             <Badge variant="secondary" className="mb-2">{item.category}</Badge>
                             <h3 className="font-headline text-xl font-semibold">{item.title}</h3>
                             <div className="flex items-center gap-2 text-muted-foreground mt-2">
                                 <MapPin className="h-4 w-4" />
                                 <span>{item.location}</span>
                             </div>
-                            <div className="flex items-center gap-4 text-muted-foreground mt-2 text-sm">
-                                <span className="flex items-center gap-1"><BedDouble className="h-4 w-4"/> {item.details.split(',')[0]}</span>
-                                <span className="flex items-center gap-1"><Bath className="h-4 w-4"/> {item.details.split(',')[1]}</span>
+                            <div className="flex items-center gap-2 text-muted-foreground mt-2 text-sm">
+                                {item.icon}
+                                <span>{item.details}</span>
                             </div>
                         </CardContent>
                         <CardFooter className="flex justify-between items-center p-6 bg-gray-50">
