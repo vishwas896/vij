@@ -1,6 +1,7 @@
 
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "firebase/app-check";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC9_UHK-HyNsExr7CPN0Nu8lbHwgH4Fx0g",
@@ -13,6 +14,15 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+
+// Initialize App Check only on the client side
+if (typeof window !== 'undefined') {
+  initializeAppCheck(app, {
+    provider: new ReCaptchaEnterpriseProvider('6Lfl0qMrAAAAAGMpdaNCTU958pgXu1e6P9RuNoRw'),
+    isTokenAutoRefreshEnabled: true
+  });
+}
+
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
