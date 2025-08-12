@@ -1,5 +1,6 @@
-import { ResumeBuilderForm } from "@/components/resume-builder-form";
-import { BotMessageSquare } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { BotMessageSquare, ExternalLink } from "lucide-react";
+import Link from "next/link";
 
 export default function ResumeBuilderPage() {
     return (
@@ -7,13 +8,19 @@ export default function ResumeBuilderPage() {
             <div className="text-center mb-12">
                 <BotMessageSquare className="mx-auto h-16 w-16 text-primary" />
                 <h1 className="mt-6 text-4xl font-headline font-bold tracking-tighter sm:text-5xl text-primary">
-                    AI Resume Builder Demo
+                    AI Resume Builder
                 </h1>
                 <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
-                    Craft a compelling resume for the social impact sector. Select an example prompt below to see how our AI can tailor your experience, incorporating best practices for roles that make a difference.
+                    We recommend using Open Resume, a powerful, free, and open-source resume builder and parser.
                 </p>
+                <div className="mt-8">
+                     <Button asChild size="lg">
+                        <a href="https://open-resume.com/" target="_blank" rel="noopener noreferrer">
+                           Go to Open Resume <ExternalLink className="ml-2 h-4 w-4" />
+                        </a>
+                    </Button>
+                </div>
             </div>
-            <ResumeBuilderForm />
         </div>
     );
 }
