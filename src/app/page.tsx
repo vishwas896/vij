@@ -47,7 +47,7 @@ export default function Home() {
             </p>
             <div className="mt-8 flex justify-center">
               <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 group">
-                <a href="https://forms.gle/your-form-id-here" target="_blank" rel="noopener noreferrer">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdnCYDDFaOUXyINzyBX8Ob8R4C6LRdX09p-G0PIyO_8Wf1cFQ/viewform?usp=dialog" target="_blank" rel="noopener noreferrer">
                   Join Pre-launch Signup
                   <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </a>
