@@ -38,7 +38,6 @@ export function Footer() {
                 <div className="container mx-auto flex flex-col items-center justify-between gap-4 px-4 py-6 md:flex-row md:px-6">
                     <p className="text-sm text-muted-foreground">&copy; {new Date().getFullYear()} VIJ. All rights reserved.</p>
                     <div className="flex items-center gap-4">
-                        <Link href="#" aria-label="Twitter"><Twitter className="h-5 w-5 text-muted-foreground hover:text-primary transition-colors" /></Link>
                         <Link href="https://www.linkedin.com/company/vij-bp/" aria-label="LinkedIn"><Linkedin className="h-5 w-5 text-muted-foreground hover:text-primary transition-colors" /></Link>
                         <Link href="#" aria-label="Facebook"><Facebook className="h-5 w-5 text-muted-foreground hover:text-primary transition-colors" /></Link>
                     </div>

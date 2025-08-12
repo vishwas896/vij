@@ -379,9 +379,6 @@ export default function ContributionPage() {
                    We are building in public. Get real-time updates on our progress.
                 </p>
                  <div className="mt-8 flex justify-center gap-4">
-                     <Button asChild variant="outline">
-                        <a href="#" target="_blank" rel="noopener noreferrer"><Twitter className="mr-2"/>Twitter</a>
-                    </Button>
                     <Button asChild variant="outline">
                         <a href="https://www.linkedin.com/company/vij-bp/" target="_blank" rel="noopener noreferrer"><Linkedin className="mr-2"/>LinkedIn</a>
                     </Button>
