@@ -68,12 +68,14 @@ export function AuthForm({ isSignup = false }: { isSignup?: boolean }) {
     });
 
     useEffect(() => {
-        window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-          'size': 'invisible',
-          'callback': (response: any) => {
-            // reCAPTCHA solved, allow signInWithPhoneNumber.
-          }
-        });
+        if (!window.recaptchaVerifier) {
+            window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+              'size': 'invisible',
+              'callback': (response: any) => {
+                // reCAPTCHA solved, allow signInWithPhoneNumber.
+              }
+            });
+        }
     }, []);
 
     const handleGoogleSignIn = async () => {
