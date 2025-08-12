@@ -52,7 +52,7 @@ export default function Home() {
               VIJ is in development. Our platform will connect you with jobs, services, and housing to support your journey in making a difference.
             </p>
             <p className="mt-2 text-sm text-muted-foreground">
-              Expected Launch: Fall 2024
+              Expected Launch: Fall 2025
             </p>
             <div className="mt-8 flex justify-center">
               <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 group">
