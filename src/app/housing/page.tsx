@@ -4,6 +4,9 @@ import { Badge } from "@/components/ui/badge";
 import { Home, MapPin, BedDouble, Bath, Utensils, Box } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
 
 const mockListings = [
     {
@@ -82,37 +85,80 @@ export default function HousingPage() {
                     <Link href="/housing/add">Add a Listing</Link>
                 </Button>
             </div>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {mockListings.map((item, index) => (
-                    <Card key={index} className="flex flex-col overflow-hidden group hover:shadow-xl transition-shadow duration-300">
-                         <CardHeader className="p-0">
-                            <Image
-                                src={item.imageUrl}
-                                alt={item.title}
-                                width={600}
-                                height={400}
-                                className="h-56 w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                                data-ai-hint={item.aiHint}
-                            />
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <aside className="md:col-span-1">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="font-headline text-lg">Filters</CardTitle>
                         </CardHeader>
-                        <CardContent className="p-6 flex-grow">
-                             <Badge variant="secondary" className="mb-2">{item.category}</Badge>
-                            <h3 className="font-headline text-xl font-semibold">{item.title}</h3>
-                            <div className="flex items-center gap-2 text-muted-foreground mt-2">
-                                <MapPin className="h-4 w-4" />
-                                <span>{item.location}</span>
+                        <CardContent className="space-y-6">
+                            <div>
+                                <Label className="font-semibold">Category</Label>
+                                <div className="space-y-2 mt-2">
+                                    <div className="flex items-center space-x-2">
+                                        <Checkbox id="room" />
+                                        <Label htmlFor="room">Room</Label>
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                        <Checkbox id="pg" />
+                                        <Label htmlFor="pg">PG</Label>
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                        <Checkbox id="catering" />
+                                        <Label htmlFor="catering">Catering</Label>
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                        <Checkbox id="lunch-box" />
+                                        <Label htmlFor="lunch-box">Lunch Box</Label>
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                        <Checkbox id="tiffin-service" />
+                                        <Label htmlFor="tiffin-service">Tiffin Service</Label>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="flex items-center gap-2 text-muted-foreground mt-2 text-sm">
-                                {item.icon}
-                                <span>{item.details}</span>
+                            <div>
+                                <Label htmlFor="location" className="font-semibold">Location</Label>
+                                <Input id="location" placeholder="e.g., Brooklyn, NY" className="mt-2" />
                             </div>
+                            <Button className="w-full">Apply Filters</Button>
                         </CardContent>
-                        <CardFooter className="flex justify-between items-center p-6 bg-gray-50">
-                            <p className="text-lg font-semibold text-primary">{item.price}</p>
-                            <Button>View Details</Button>
-                        </CardFooter>
                     </Card>
-                ))}
+                </aside>
+                <main className="md:col-span-3">
+                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                        {mockListings.map((item, index) => (
+                            <Card key={index} className="flex flex-col overflow-hidden group hover:shadow-xl transition-shadow duration-300">
+                                 <CardHeader className="p-0">
+                                    <Image
+                                        src={item.imageUrl}
+                                        alt={item.title}
+                                        width={600}
+                                        height={400}
+                                        className="h-56 w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                        data-ai-hint={item.aiHint}
+                                    />
+                                </CardHeader>
+                                <CardContent className="p-6 flex-grow">
+                                     <Badge variant="secondary" className="mb-2">{item.category}</Badge>
+                                    <h3 className="font-headline text-xl font-semibold">{item.title}</h3>
+                                    <div className="flex items-center gap-2 text-muted-foreground mt-2">
+                                        <MapPin className="h-4 w-4" />
+                                        <span>{item.location}</span>
+                                    </div>
+                                    <div className="flex items-center gap-2 text-muted-foreground mt-2 text-sm">
+                                        {item.icon}
+                                        <span>{item.details}</span>
+                                    </div>
+                                </CardContent>
+                                <CardFooter className="flex justify-between items-center p-6 bg-gray-50">
+                                    <p className="text-lg font-semibold text-primary">{item.price}</p>
+                                    <Button>View Details</Button>
+                                </CardFooter>
+                            </Card>
+                        ))}
+                    </div>
+                </main>
             </div>
         </div>
     )
