@@ -397,7 +397,4 @@ export default function ContributionPage() {
        </section>
     </div>
   );
-
-    
-
-    
+}
