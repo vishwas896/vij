@@ -49,6 +49,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+        <script src="https://www.google.com/recaptcha/enterprise.js?render=6Lfl0qMrAAAAAGMpdaNCTU958pgXu1e6P9RuNoRw" async defer></script>
       </head>
       <body className="font-body antialiased">
         <AuthProvider>
