@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { Mountain, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { Logo } from "./logo";
 
 const navLinks = [
     { href: "/explore", label: "Explore", isButton: true },
@@ -22,7 +23,7 @@ export function Header() {
     return (
         <header className="sticky top-0 z-50 flex h-16 items-center justify-between border-b bg-background/80 px-4 backdrop-blur-sm md:px-6">
             <Link href="/" className="flex items-center gap-2">
-                <Mountain className="h-6 w-6 text-primary" />
+                <Logo />
                 <span className="text-xl font-bold text-primary font-headline">VIJ</span>
             </Link>
             <nav className="hidden items-center gap-4 text-sm font-medium lg:flex">
@@ -65,7 +66,7 @@ export function Header() {
                     <SheetContent side="right">
                         <div className="grid gap-4 py-6">
                              <Link href="/" className="flex items-center gap-2 mb-4">
-                                <Mountain className="h-6 w-6 text-primary" />
+                                <Logo />
                                 <span className="text-xl font-bold text-primary font-headline">VIJ</span>
                             </Link>
                             {navLinks.map(link => (

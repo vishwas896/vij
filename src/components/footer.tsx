@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Mountain, Twitter, Linkedin, Facebook } from "lucide-react";
+import { Twitter, Linkedin, Facebook } from "lucide-react";
+import { Logo } from "./logo";
 
 export function Footer() {
     return (
@@ -7,7 +8,7 @@ export function Footer() {
             <div className="container mx-auto grid grid-cols-1 gap-8 px-4 py-12 md:grid-cols-3 md:px-6">
                 <div className="flex flex-col items-center md:items-start">
                     <Link href="/" className="flex items-center gap-2">
-                        <Mountain className="h-6 w-6 text-primary" />
+                        <Logo />
                         <span className="text-xl font-bold text-primary font-headline">VIJ</span>
                     </Link>
                     <p className="mt-2 text-center text-sm text-muted-foreground md:text-left">
