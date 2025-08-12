@@ -18,7 +18,7 @@ const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 // Initialize App Check only on the client side
 if (typeof window !== 'undefined') {
   initializeAppCheck(app, {
-    provider: new ReCaptchaEnterpriseProvider('6Lfl0qMrAAAAAGMpdaNCTU958pgXu1e6P9RuNoRw'),
+    provider: new ReCaptchaEnterpriseProvider("6Lfl0qMrAAAAAGMpdaNCTU958pgXu1e6P9RuNoRw"),
     isTokenAutoRefreshEnabled: true
   });
 }
