@@ -16,7 +16,7 @@ export default function SignupPage() {
                     </p>
                 </div>
                 <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
-                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdnCYDDFaOUXyINzyBX8Ob8R4C6LRdX09p-G0PIyO_8Wf1cFQ/viewform?usp=dialog" target="_blank" rel="noopener noreferrer">
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdnCYDDFaOUXyINzyBX8Ob8R4C6LRdX09p-G0PIyO_8Wf1cFQ/viewform" target="_blank" rel="noopener noreferrer">
                         Sign Up for Updates
                     </a>
                 </Button>

@@ -171,7 +171,7 @@ export default function Home() {
                         <p className="mt-6 font-semibold">Join 500+ early supporters who believe in our mission.</p>
                          <div className="mt-8 flex justify-center">
                              <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg transition-transform hover:scale-105">
-                                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdnCYDDFaOUXyINzyBX8Ob8R4C6LRdX09p-G0PIyO_8Wf1cFQ/viewform?usp=dialog" target="_blank" rel="noopener noreferrer">
+                                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdnCYDDFaOUXyINzyBX8Ob8R4C6LRdX09p-G0PIyO_8Wf1cFQ/viewform" target="_blank" rel="noopener noreferrer">
                                     Get Pre-Launch Updates
                                 </a>
                             </Button>
