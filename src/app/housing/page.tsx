@@ -18,7 +18,7 @@ const mockListings = [
         price: "$1,200/month",
         category: "Room",
         details: "2 Bed, 2 Bath",
-        imageUrl: "https://placehold.co/600x400.png?1",
+        imageUrl: "https://placehold.co/600x400.png",
         aiHint: "modern apartment",
         icon: <BedDouble className="h-4 w-4"/>
     },
@@ -28,7 +28,7 @@ const mockListings = [
         price: "$15/meal",
         category: "Tiffin Service",
         details: "Daily Lunch & Dinner",
-        imageUrl: "https://placehold.co/600x400.png?7",
+        imageUrl: "https://placehold.co/600x400.png",
         aiHint: "meal prep containers",
         icon: <Utensils className="h-4 w-4"/>
     },
@@ -38,7 +38,7 @@ const mockListings = [
         price: "$950/month",
         category: "Room", // Changed for filtering
         details: "1 Bed, 1 Bath",
-        imageUrl: "https://placehold.co/600x400.png?2",
+        imageUrl: "https://placehold.co/600x400.png",
         aiHint: "cozy studio",
         icon: <Home className="h-4 w-4"/>
     },
@@ -48,7 +48,7 @@ const mockListings = [
         price: "$75/week",
         category: "Lunch Box",
         details: "5 meals/week",
-        imageUrl: "https://placehold.co/600x400.png?8",
+        imageUrl: "https://placehold.co/600x400.png",
         aiHint: "healthy lunchbox",
         icon: <Box className="h-4 w-4"/>
     },
@@ -58,7 +58,7 @@ const mockListings = [
         price: "$800/month",
         category: "Room", // Changed for filtering
         details: "4 Bed, 2 Bath",
-        imageUrl: "https://placehold.co/600x400.png?3",
+        imageUrl: "https://placehold.co/600x400.png",
         aiHint: "suburban house",
         icon: <BedDouble className="h-4 w-4"/>
     },
@@ -68,7 +68,7 @@ const mockListings = [
         price: "Varies",
         category: "Catering",
         details: "Up to 100 guests",
-        imageUrl: "https://placehold.co/600x400.png?9",
+        imageUrl: "https://placehold.co/600x400.png",
         aiHint: "catering buffet",
         icon: <Utensils className="h-4 w-4"/>
     },

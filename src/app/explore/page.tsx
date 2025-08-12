@@ -72,7 +72,7 @@ export default function ExplorePage() {
                         {placeholderItems.map((_, index) => (
                             <Card key={index} className="overflow-hidden group hover:shadow-xl transition-shadow duration-300">
                                 <Image
-                                    src={`https://placehold.co/600x400.png?${index}`}
+                                    src={`https://placehold.co/600x400.png`}
                                     alt="Placeholder"
                                     width={600}
                                     height={400}

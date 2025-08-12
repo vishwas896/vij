@@ -157,9 +157,9 @@ export default function Home() {
                     </p>
                     <div className="mt-12 text-center">
                          <div className="flex justify-center -space-x-4">
-                            <Image className="rounded-full border-2 border-background" src="https://placehold.co/64x64.png?1" alt="Supporter 1" width={64} height={64} data-ai-hint="person photo" />
-                            <Image className="rounded-full border-2 border-background" src="https://placehold.co/64x64.png?2" alt="Supporter 2" width={64} height={64} data-ai-hint="person photo" />
-                            <Image className="rounded-full border-2 border-background" src="https://placehold.co/64x64.png?3" alt="Supporter 3" width={64} height={64} data-ai-hint="person photo" />
+                            <Image className="rounded-full border-2 border-background" src="https://placehold.co/64x64.png" alt="Supporter 1" width={64} height={64} data-ai-hint="person photo" />
+                            <Image className="rounded-full border-2 border-background" src="https://placehold.co/64x64.png" alt="Supporter 2" width={64} height={64} data-ai-hint="person photo" />
+                            <Image className="rounded-full border-2 border-background" src="https://placehold.co/64x64.png" alt="Supporter 3" width={64} height={64} data-ai-hint="person photo" />
                             <div className="h-16 w-16 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold border-2 border-background">
                                 500+
                             </div>
