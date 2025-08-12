@@ -9,17 +9,7 @@ import { Briefcase, MapPin, Search, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { searchJobs } from "./actions";
-
-interface Job {
-    id: string;
-    title: string;
-    company: { display_name: string };
-    location: { display_name: string };
-    description: string;
-    redirect_url: string;
-    contract_time?: string;
-}
+import { searchJobs, Job } from "./actions";
 
 export default function JobsPage() {
     const [jobs, setJobs] = useState<Job[]>([]);
@@ -28,7 +18,7 @@ export default function JobsPage() {
     const [searchQuery, setSearchQuery] = useState('');
     const [locationQuery, setLocationQuery] = useState('');
 
-    const fetchJobs = (what = 'social impact', where = 'india') => {
+    const fetchJobs = (what?: string, where?: string) => {
         startTransition(async () => {
             const result = await searchJobs({ what, where });
             if (result.success) {
@@ -44,7 +34,8 @@ export default function JobsPage() {
     };
 
     useEffect(() => {
-        fetchJobs();
+        // Initial fetch with default values
+        fetchJobs('social impact', 'india');
     }, []);
 
     const handleSearch = (e: React.FormEvent) => {
@@ -52,13 +43,25 @@ export default function JobsPage() {
         fetchJobs(searchQuery, locationQuery);
     };
 
+    const getJobType = (contractTime?: string) => {
+        if (!contractTime) return 'Contract';
+        const lowerCaseTime = contractTime.toLowerCase();
+        if (lowerCaseTime.includes('full_time') || lowerCaseTime.includes('full time')) {
+            return 'Full-time';
+        }
+        if (lowerCaseTime.includes('part_time') || lowerCaseTime.includes('part time')) {
+            return 'Part-time';
+        }
+        return 'Contract';
+    }
+
     return (
         <div className="container mx-auto px-4 py-12 md:px-6">
             <div className="flex flex-col items-center justify-between gap-4 text-center mb-12 md:flex-row md:text-left">
                 <div>
                     <h1 className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl text-primary">Job Board</h1>
                     <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
-                        Find your next role in the social impact sector, powered by Adzuna.
+                        Find your next role in the social impact sector, powered by Adzuna & Jooble.
                     </p>
                 </div>
                  <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
@@ -102,9 +105,10 @@ export default function JobsPage() {
             ) : jobs.length > 0 ? (
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                     {jobs.map((job) => (
-                        <Card key={job.id} className="flex flex-col hover:shadow-lg transition-shadow duration-300">
+                        <Card key={job.id} className="flex flex-col hover:shadow-lg transition-shadow duration-300 relative">
+                             <Badge variant="secondary" className="absolute top-4 right-4">{job.source}</Badge>
                             <CardHeader>
-                                <CardTitle className="font-headline text-2xl">{job.title}</CardTitle>
+                                <CardTitle className="font-headline text-2xl pr-16">{job.title}</CardTitle>
                                 <div className="flex items-center gap-2 text-muted-foreground pt-2">
                                     <Briefcase className="h-4 w-4" />
                                     <span>{job.company.display_name}</span>
@@ -119,8 +123,8 @@ export default function JobsPage() {
                                     <span>{job.location.display_name}</span>
                                 </div>
                                 <div className="flex justify-between items-center w-full">
-                                    <Badge variant={job.contract_time === 'full_time' ? 'default' : 'secondary'} className={job.contract_time === 'full_time' ? 'bg-primary' : ''}>
-                                        {job.contract_time === 'full_time' ? 'Full-time' : job.contract_time === 'part_time' ? 'Part-time' : 'Contract'}
+                                    <Badge variant={getJobType(job.contract_time) === 'Full-time' ? 'default' : 'secondary'} className={getJobType(job.contract_time) === 'Full-time' ? 'bg-primary' : ''}>
+                                        {getJobType(job.contract_time)}
                                     </Badge>
                                      <Button variant="outline" asChild>
                                         <a href={job.redirect_url} target="_blank" rel="noopener noreferrer">View Job</a>
