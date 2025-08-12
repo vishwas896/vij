@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Menu } from "lucide-react";
+import { Menu, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { usePathname } from "next/navigation";
@@ -50,12 +50,18 @@ export function Header() {
                     )
                 ))}
             </nav>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
                  <Button asChild className="hidden lg:inline-flex bg-accent text-accent-foreground hover:bg-accent/90">
                     <a href="https://docs.google.com/forms/d/e/1FAIpQLSdnCYDDFaOUXyINzyBX8Ob8R4C6LRdX09p-G0PIyO_8Wf1cFQ/viewform?usp=dialog" target="_blank" rel="noopener noreferrer">
                         Pre-launch Sign-up
                     </a>
                 </Button>
+                 <Button asChild variant="ghost">
+                    <Link href="/login">
+                        <LogIn className="mr-2 h-4 w-4" />
+                        Login
+                    </Link>
+                 </Button>
                 <Sheet>
                     <SheetTrigger asChild>
                         <Button variant="outline" size="icon" className="lg:hidden">
@@ -85,6 +91,12 @@ export function Header() {
                                 <a href="https://docs.google.com/forms/d/e/1FAIpQLSdnCYDDFaOUXyINzyBX8Ob8R4C6LRdX09p-G0PIyO_8Wf1cFQ/viewform?usp=dialog" target="_blank" rel="noopener noreferrer">
                                     Pre-launch Sign-up
                                 </a>
+                            </Button>
+                             <Button asChild className="mt-2" variant="outline">
+                                <Link href="/login">
+                                   <LogIn className="mr-2 h-4 w-4" />
+                                    Login / Sign Up
+                                </Link>
                             </Button>
                         </div>
                     </SheetContent>
