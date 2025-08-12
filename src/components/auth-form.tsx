@@ -64,7 +64,7 @@ export function AuthForm({ isSignup = false }: { isSignup?: boolean }) {
                     await createUserWithEmailAndPassword(auth, email, password);
                     toast({
                         title: "Account Created!",
-                        description: "You have been successfully signed up.",
+                        description: "You have successfully created an account.",
                     });
                      router.push("/");
                 } else {
@@ -72,7 +72,7 @@ export function AuthForm({ isSignup = false }: { isSignup?: boolean }) {
                     await signInWithEmailAndPassword(auth, email, password);
                      toast({
                         title: "Signed In!",
-                        description: "You have been successfully signed in.",
+                        description: "You have successfully signed in.",
                     });
                     router.push("/");
                 }
