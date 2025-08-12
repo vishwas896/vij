@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight, Briefcase, HeartHandshake, Home as HomeIcon, BotMessageSquare } from "lucide-react";
+import { ArrowRight, Briefcase, HeartHandshake, Home as HomeIcon, BotMessageSquare, HandHeart } from "lucide-react";
 import Link from "next/link";
 
 export default function Home() {
@@ -30,6 +30,15 @@ export default function Home() {
       link: "/resume-builder"
     },
   ];
+
+  const secondaryFeatures = [
+      {
+          icon: <HandHeart className="h-10 w-10 text-primary" />,
+          title: "Contribute",
+          description: "Support our mission and help us grow. Your contribution makes a direct impact on our ability to serve the community.",
+          link: "/contribution"
+      }
+  ]
 
   return (
     <div className="flex flex-col items-center justify-center">
@@ -68,6 +77,21 @@ export default function Home() {
           <div className="mx-auto grid items-start gap-8 sm:max-w-4xl sm:grid-cols-2 md:gap-12 lg:max-w-5xl lg:grid-cols-4 mt-12">
             {features.map((feature, index) => (
               <Link href={feature.link} key={index} className="group">
+                <Card className="h-full hover:shadow-lg transition-shadow duration-300">
+                  <CardHeader className="flex flex-col items-center text-center">
+                    {feature.icon}
+                    <CardTitle className="mt-4 text-2xl font-bold font-headline">{feature.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-center text-muted-foreground">{feature.description}</p>
+                  </CardContent>
+                </Card>
+              </Link>
+            ))}
+          </div>
+           <div className="mx-auto grid items-start gap-8 sm:max-w-4xl sm:grid-cols-2 md:gap-12 lg:max-w-5xl lg:grid-cols-4 mt-12 justify-center">
+            {secondaryFeatures.map((feature, index) => (
+              <Link href={feature.link} key={index} className="group lg:col-start-2 lg:col-span-2">
                 <Card className="h-full hover:shadow-lg transition-shadow duration-300">
                   <CardHeader className="flex flex-col items-center text-center">
                     {feature.icon}
