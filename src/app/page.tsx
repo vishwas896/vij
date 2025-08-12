@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowDown, BotMessageSquare, Briefcase, HandHeart, HomeIcon, Lightbulb, TrendingUp, Users } from "lucide-react";
 import Image from 'next/image';
-import { UpiQrCode } from "@/components/upi-qr-code";
 import Link from "next/link";
 
 export default function Home() {
@@ -133,16 +132,13 @@ export default function Home() {
                     <div className="flex flex-col items-center justify-center">
                         <Card className="w-full max-w-sm text-center shadow-2xl">
                             <CardHeader>
-                                <CardTitle className="font-headline text-2xl">Contribute with UPI</CardTitle>
+                                <CardTitle className="font-headline text-2xl">Contribute to the Mission</CardTitle>
                             </CardHeader>
                             <CardContent className="flex flex-col items-center justify-center gap-4">
-                               <p className="text-muted-foreground">Scan the QR code with any UPI app to support VIJ.</p>
-                                <div className="p-4 bg-white rounded-lg">
-                                  <UpiQrCode upiLink={upiLink} />
-                                </div>
+                               <p className="text-muted-foreground">Your support helps us build a better future for social impact careers. Every contribution makes a difference.</p>
                                 <Button asChild size="lg" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
                                     <Link href="/contribution">
-                                        <HandHeart className="mr-2" /> Pay via UPI
+                                        <HandHeart className="mr-2" /> Contribute Now
                                     </Link>
                                 </Button>
                             </CardContent>
