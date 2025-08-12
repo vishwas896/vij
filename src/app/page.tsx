@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowDown, BotMessageSquare, Briefcase, HandHeart, HomeIcon, Lightbulb, TrendingUp, Users } from "lucide-react";
 import Image from 'next/image';
 import { UpiQrCode } from "@/components/upi-qr-code";
+import Link from "next/link";
 
 export default function Home() {
     const features = [
@@ -63,9 +64,9 @@ export default function Home() {
                         </p>
                         <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
                             <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg transition-transform hover:scale-105">
-                                <a href={upiLink}>
+                                <Link href="/contribution">
                                     <HandHeart className="mr-2" /> Contribute Now
-                                </a>
+                                </Link>
                             </Button>
                             <Button asChild size="lg" variant="outline" className="bg-background/50 backdrop-blur-sm transition-transform hover:scale-105">
                                 <a href="#features">
@@ -73,8 +74,8 @@ export default function Home() {
                                 </a>
                             </Button>
                         </div>
-                        <p className="mt-8 text-sm font-semibold text-primary">
-                            Help us launch faster — be a founding supporter!
+                         <p className="mt-8 text-sm font-semibold text-primary">
+                            Expected Launch: Fall 2025
                         </p>
                     </div>
                 </div>
@@ -140,9 +141,9 @@ export default function Home() {
                                   <UpiQrCode upiLink={upiLink} />
                                 </div>
                                 <Button asChild size="lg" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
-                                    <a href={upiLink}>
+                                    <Link href="/contribution">
                                         <HandHeart className="mr-2" /> Pay via UPI
-                                    </a>
+                                    </Link>
                                 </Button>
                             </CardContent>
                         </Card>
