@@ -3,10 +3,37 @@ import './globals.css';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { Toaster } from "@/components/ui/toaster"
+import { SpeedInsights } from "@vercel/speed-insights/next"
+
 
 export const metadata: Metadata = {
-  title: 'VIJ - Building a community for social impact',
-  description: 'VIJ is a platform for jobs, services, and housing, with an AI resume builder to help you succeed in the social impact sector.',
+  metadataBase: new URL('https://vij.life'),
+  title: {
+    default: "VIJ - India's Intelligent Job Network for Social Impact",
+    template: `%s | VIJ`,
+  },
+  description: 'VIJ is a social job portal where talent meets opportunity, powered by AI. Join us in building a community that drives change in the social impact sector.',
+   openGraph: {
+    title: "VIJ - India's Intelligent Job Network for Social Impact",
+    description: 'A social job portal where talent meets opportunity, powered by AI.',
+    url: 'https://vij.life',
+    siteName: 'VIJ',
+    images: [
+      {
+        url: '/og-image.png', // It's a good practice to have an OG image
+        width: 1200,
+        height: 630,
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "VIJ - India's Intelligent Job Network for Social Impact",
+    description: 'A social job portal where talent meets opportunity, powered by AI.',
+    // images: ['/twitter-image.png'], // And a twitter image
+  },
 };
 
 export default function RootLayout({
@@ -28,6 +55,7 @@ export default function RootLayout({
           <Footer />
         </div>
         <Toaster />
+        <SpeedInsights/>
       </body>
     </html>
   );
