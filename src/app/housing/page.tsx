@@ -153,7 +153,9 @@ export default function HousingPage() {
                                 </CardContent>
                                 <CardFooter className="flex justify-between items-center p-6 bg-gray-50">
                                     <p className="text-lg font-semibold text-primary">{item.price}</p>
-                                    <Button>View Details</Button>
+                                     <Button asChild>
+                                        <a href={`https://www.google.com/search?q=${encodeURIComponent(item.title + ' in ' + item.location)}`} target="_blank" rel="noopener noreferrer">View Details</a>
+                                    </Button>
                                 </CardFooter>
                             </Card>
                         ))}
