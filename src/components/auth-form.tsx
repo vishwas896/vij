@@ -84,7 +84,7 @@ export function AuthForm({ isSignup = false }: { isSignup?: boolean }) {
                     title: "Signed In!",
                     description: "You have successfully signed in with Google.",
                 });
-                router.push("/");
+                router.push("/profile");
             } catch (error: any) {
                  toast({
                     title: "Authentication Error",
@@ -126,7 +126,7 @@ export function AuthForm({ isSignup = false }: { isSignup?: boolean }) {
             try {
                 await confirmationResult.confirm(otp);
                 toast({ title: "Signed In!", description: "You have successfully signed in with your phone." });
-                router.push("/");
+                router.push("/profile");
             } catch (error: any) {
                  toast({ title: "Invalid OTP", description: "The OTP you entered is incorrect. Please try again.", variant: 'destructive' });
             }
@@ -144,7 +144,7 @@ export function AuthForm({ isSignup = false }: { isSignup?: boolean }) {
                         title: "Account Created!",
                         description: "You have successfully created an account.",
                     });
-                     router.push("/");
+                     router.push("/profile");
                 } else {
                     const { email, password } = values as LoginSchema;
                     await signInWithEmailAndPassword(auth, email, password);
@@ -152,7 +152,7 @@ export function AuthForm({ isSignup = false }: { isSignup?: boolean }) {
                         title: "Signed In!",
                         description: "You have successfully signed in.",
                     });
-                    router.push("/");
+                    router.push("/profile");
                 }
            } catch (error: any) {
                 toast({

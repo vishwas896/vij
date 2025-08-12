@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, LogIn, LogOut } from "lucide-react";
+import { Menu, LogIn, LogOut, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { usePathname } from "next/navigation";
@@ -12,6 +12,16 @@ import { useAuth } from "@/hooks/use-auth";
 import { auth } from "@/lib/firebase";
 import { signOut } from "firebase/auth";
 import { useToast } from "@/hooks/use-toast";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+
 
 const navLinks = [
     { href: "/explore", label: "Explore", isButton: true },
@@ -42,6 +52,11 @@ export function Header() {
             });
         }
     };
+    
+    const getInitials = (email?: string | null) => {
+        return email ? email.charAt(0).toUpperCase() : '?';
+    }
+
 
     return (
         <header className="sticky top-0 z-50 flex h-16 items-center justify-between border-b bg-background/80 px-4 backdrop-blur-sm md:px-6">
@@ -80,10 +95,35 @@ export function Header() {
                     </a>
                 </Button>
                 {user ? (
-                    <Button variant="ghost" onClick={handleSignOut}>
-                        <LogOut className="mr-2 h-4 w-4" />
-                        Logout
-                    </Button>
+                     <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                                <Avatar className="h-9 w-9">
+                                    <AvatarImage src={user.photoURL || ''} alt={user.displayName || 'User'} />
+                                    <AvatarFallback>{getInitials(user.email)}</AvatarFallback>
+                                </Avatar>
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className="w-56" align="end" forceMount>
+                            <DropdownMenuLabel className="font-normal">
+                            <div className="flex flex-col space-y-1">
+                                <p className="text-sm font-medium leading-none">{user.displayName || "User"}</p>
+                                <p className="text-xs leading-none text-muted-foreground">
+                                {user.email}
+                                </p>
+                            </div>
+                            </DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem asChild>
+                                <Link href="/profile"><User className="mr-2 h-4 w-4" />Profile</Link>
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem onClick={handleSignOut}>
+                                <LogOut className="mr-2 h-4 w-4" />
+                               <span>Log out</span>
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 ) : (
                  <Button asChild variant="ghost">
                     <Link href="/login">
@@ -123,10 +163,18 @@ export function Header() {
                                 </a>
                             </Button>
                              {user ? (
+                                <>
+                                 <Button asChild className="mt-2" variant="outline">
+                                    <Link href="/profile">
+                                        <User className="mr-2 h-4 w-4" />
+                                        Profile
+                                    </Link>
+                                </Button>
                                 <Button className="mt-2" variant="outline" onClick={handleSignOut}>
                                     <LogOut className="mr-2 h-4 w-4" />
                                     Logout
                                 </Button>
+                                </>
                              ) : (
                                 <Button asChild className="mt-2" variant="outline">
                                     <Link href="/login">
