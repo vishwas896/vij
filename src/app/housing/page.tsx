@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Home, MapPin, BedDouble, Utensils, Box } from "lucide-react";
+import { Home, MapPin, BedDouble, Utensils, Box, PlusCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Label } from "@/components/ui/label";
@@ -121,6 +121,12 @@ export default function HousingPage() {
                         Find housing and essential services tailored for the social impact community.
                     </p>
                 </div>
+                 <Button asChild>
+                    <Link href="/housing/add">
+                        <PlusCircle className="mr-2 h-4 w-4" />
+                        Add a Listing
+                    </Link>
+                </Button>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <aside className="md:col-span-1">

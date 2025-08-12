@@ -1,11 +1,10 @@
-
 'use client';
 
 import { useState, useEffect, useTransition } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Briefcase, MapPin, Search, Loader2 } from "lucide-react";
+import { Briefcase, MapPin, Search, Loader2, PlusCircle } from "lucide-react";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
@@ -64,6 +63,12 @@ export default function JobsPage() {
                         Find your next role in the social impact sector, powered by Adzuna & Jooble.
                     </p>
                 </div>
+                 <Button asChild>
+                    <Link href="/jobs/post">
+                        <PlusCircle className="mr-2 h-4 w-4" />
+                        Post a Job
+                    </Link>
+                </Button>
             </div>
 
             <Card className="mb-8 shadow-md">
