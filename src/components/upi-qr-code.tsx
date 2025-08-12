@@ -1151,7 +1151,7 @@ const qrcode = (() => {
   const _this = (text: string, options: any) => {
 
     const _options = {
-      typeNumber: 4,
+      typeNumber: -1,
       errorCorrectionLevel: 'M',
       render: 'canvas',
       width: 256,
@@ -1167,34 +1167,33 @@ const qrcode = (() => {
 
     const _qrcode = qrcode();
 
-    const textLength = _stringToBytes(text).length;
-
-    let typeNumber = 1;
-    let length = 0;
-    const rsBlock = _rsBlock.getRSBlocks(
-      typeNumber, _errorCorrectionLevel);
-    length = rsBlock[0].dataCount;
-
-    let found = false;
-    for (let t = 1; t < 40; t += 1) {
-      const rsBlock = _rsBlock.getRSBlocks(t, _errorCorrectionLevel);
-      let l = 0;
-      for (let i = 0; i < rsBlock.length; i += 1) {
-        l += rsBlock[i].dataCount;
+    if (_options.typeNumber < 0) {
+      const textLength = _stringToBytes(text).length;
+      let typeNumber = 1;
+      let length = 0;
+      
+      let found = false;
+      for (let t = 1; t <= 40; t += 1) {
+        const rsBlock = _rsBlock.getRSBlocks(t, _errorCorrectionLevel);
+        let l = 0;
+        for (let i = 0; i < rsBlock.length; i += 1) {
+          l += rsBlock[i].dataCount;
+        }
+  
+        if (textLength <= l) {
+          typeNumber = t;
+          length = l;
+          found = true;
+          break;
+        }
       }
-
-      if (textLength <= l) {
-        typeNumber = t;
-        found = true;
-        break;
+  
+      if (!found) {
+        throw new Error('code length overflow. (' + textLength + ' > ' + length + ')');
       }
+      _options.typeNumber = typeNumber;
     }
 
-    if (!found) {
-      throw new Error('code length overflow. (' + textLength + ' > ' + length + ')');
-    }
-
-    _options.typeNumber = typeNumber;
 
     let bestMaskPattern = -1;
     let minLostPoint = 0;
@@ -1242,7 +1241,7 @@ export function UpiQrCode({ upiLink }: { upiLink: string }) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
-        if (canvasRef.current) {
+        if (canvasRef.current && upiLink) {
             qrcode(upiLink, {
                 canvas: canvasRef.current,
                 width: 200,
