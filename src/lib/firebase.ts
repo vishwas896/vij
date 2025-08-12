@@ -2,16 +2,13 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
-// --- IMPORTANT ---
-// TODO: Replace the placeholder values below with your actual Firebase project configuration.
-// You can find this in your Firebase project settings under "General".
 const firebaseConfig = {
-  apiKey: "AIzaSyXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "1:YOUR_MESSAGING_SENDER_ID:web:YOUR_APP_ID"
+  apiKey: "AIzaSyC9_UHK-HyNsExr7CPN0Nu8lbHwgH4Fx0g",
+  authDomain: "vij0-2626c.firebaseapp.com",
+  projectId: "vij0-2626c",
+  storageBucket: "vij0-2626c.appspot.com",
+  messagingSenderId: "302997831175",
+  appId: "1:302997831175:web:a315f63d18d2c681f9b4a2"
 };
 
 // Initialize Firebase
