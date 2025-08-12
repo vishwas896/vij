@@ -83,11 +83,13 @@ export default function HousingPage() {
     const [categoryFilters, setCategoryFilters] = useState<string[]>([]);
 
     const handleCategoryChange = (category: string, checked: boolean | "indeterminate") => {
-        if (checked) {
-            setCategoryFilters(prev => [...prev, category]);
-        } else {
-            setCategoryFilters(prev => prev.filter(c => c !== category));
-        }
+        setCategoryFilters(prev => {
+            if (checked) {
+                return [...prev, category];
+            } else {
+                return prev.filter(c => c !== category);
+            }
+        });
     };
 
     const applyFilters = () => {
@@ -103,6 +105,12 @@ export default function HousingPage() {
 
         setFilteredListings(listings);
     };
+
+    // Apply filters whenever they change
+    React.useEffect(() => {
+        applyFilters();
+    }, [locationFilter, categoryFilters]);
+
 
     return (
         <div className="container mx-auto px-4 py-12 md:px-6">
@@ -129,9 +137,10 @@ export default function HousingPage() {
                                 <div className="space-y-2 mt-2">
                                     {categories.map(category => (
                                          <div key={category} className="flex items-center space-x-2">
-                                            <Checkbox 
-                                                id={category.toLowerCase().replace(' ', '-')} 
+                                            <Checkbox
+                                                id={category.toLowerCase().replace(' ', '-')}
                                                 onCheckedChange={(checked) => handleCategoryChange(category, checked)}
+                                                checked={categoryFilters.includes(category)}
                                             />
                                             <Label htmlFor={category.toLowerCase().replace(' ', '-')}>{category}</Label>
                                         </div>
@@ -140,15 +149,14 @@ export default function HousingPage() {
                             </div>
                             <div>
                                 <Label htmlFor="location" className="font-semibold">Location</Label>
-                                <Input 
-                                    id="location" 
-                                    placeholder="e.g., Brooklyn, NY" 
-                                    className="mt-2" 
+                                <Input
+                                    id="location"
+                                    placeholder="e.g., Brooklyn, NY"
+                                    className="mt-2"
                                     value={locationFilter}
                                     onChange={(e) => setLocationFilter(e.target.value)}
                                 />
                             </div>
-                            <Button className="w-full" onClick={applyFilters}>Apply Filters</Button>
                         </CardContent>
                     </Card>
                 </aside>
@@ -186,7 +194,9 @@ export default function HousingPage() {
                                 </CardFooter>
                             </Card>
                         )) : (
-                            <p>No listings found matching your criteria.</p>
+                            <div className="col-span-full text-center py-12">
+                                <p className="text-muted-foreground">No listings found matching your criteria.</p>
+                            </div>
                         )}
                     </div>
                 </main>
