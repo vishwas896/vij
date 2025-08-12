@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/componen
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Briefcase, MapPin } from "lucide-react";
+import Link from "next/link";
 
 const mockJobs = [
     {
@@ -58,7 +59,9 @@ export default function JobsPage() {
                         Find your next role in the social impact sector. This is a preview of our job listings.
                     </p>
                 </div>
-                <Button className="bg-accent text-accent-foreground hover:bg-accent/90">Post a Job</Button>
+                 <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
+                    <Link href="/jobs/post-a-job">Post a Job</Link>
+                </Button>
             </div>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {mockJobs.map((job, index) => (
@@ -80,7 +83,9 @@ export default function JobsPage() {
                             </div>
                             <div className="flex justify-between items-center w-full">
                                 <Badge variant={job.type === 'Full-time' ? 'default' : 'secondary'} className={job.type === 'Full-time' ? 'bg-primary' : ''}>{job.type}</Badge>
-                                <Button variant="outline">View Job</Button>
+                                 <Button variant="outline" asChild>
+                                    <a href={`https://www.google.com/search?q=${encodeURIComponent(job.title + ' in ' + job.location)}&ibp=htl;jobs`} target="_blank" rel="noopener noreferrer">View Job</a>
+                                </Button>
                             </div>
                         </CardFooter>
                     </Card>
