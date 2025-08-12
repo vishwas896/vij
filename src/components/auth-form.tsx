@@ -1,6 +1,7 @@
+
 "use client";
 
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -15,9 +16,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, LogIn, Mail, Lock } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle, CardFooter, CardDescription } from "@/components/ui/card";
+import { Loader2, LogIn, Mail, Lock, UserPlus } from "lucide-react";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import Link from "next/link";
+import { auth } from "@/lib/firebase";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { useRouter } from "next/navigation";
 
 
 const loginSchema = z.object({
@@ -41,6 +45,7 @@ type SignupSchema = z.infer<typeof signupSchema>;
 export function AuthForm({ isSignup = false }: { isSignup?: boolean }) {
     const [isPending, startTransition] = useTransition();
     const { toast } = useToast();
+    const router = useRouter();
 
     const form = useForm<LoginSchema | SignupSchema>({
         resolver: zodResolver(isSignup ? signupSchema : loginSchema),
@@ -53,12 +58,31 @@ export function AuthForm({ isSignup = false }: { isSignup?: boolean }) {
 
     function onSubmit(values: LoginSchema | SignupSchema) {
         startTransition(async () => {
-            // Placeholder for authentication logic
-            toast({
-                title: "Authentication action needed",
-                description: "Connect to a backend service like Firebase Auth.",
-            });
-            console.log(values);
+           try {
+                if (isSignup) {
+                    const { email, password } = values as SignupSchema;
+                    await createUserWithEmailAndPassword(auth, email, password);
+                    toast({
+                        title: "Account Created!",
+                        description: "You have been successfully signed up.",
+                    });
+                     router.push("/");
+                } else {
+                    const { email, password } = values as LoginSchema;
+                    await signInWithEmailAndPassword(auth, email, password);
+                     toast({
+                        title: "Signed In!",
+                        description: "You have been successfully signed in.",
+                    });
+                    router.push("/");
+                }
+           } catch (error: any) {
+                toast({
+                    title: "Authentication Error",
+                    description: error.message,
+                    variant: "destructive",
+                });
+           }
         });
     }
 
@@ -93,7 +117,7 @@ export function AuthForm({ isSignup = false }: { isSignup?: boolean }) {
                                 </FormItem>
                             )}
                         />
-                         {isSignup && (
+                         {isSignup && 'confirmPassword' in form.getValues() && (
                              <FormField
                                 control={form.control}
                                 name="confirmPassword"
@@ -118,7 +142,7 @@ export function AuthForm({ isSignup = false }: { isSignup?: boolean }) {
                                 </>
                             ) : (
                                 <>
-                                 <LogIn className="mr-2 h-4 w-4" />
+                                 {isSignup ? <UserPlus className="mr-2 h-4 w-4" /> : <LogIn className="mr-2 h-4 w-4" />}
                                  {isSignup ? "Create Account" : "Sign In"}
                                 </>
                             )}

@@ -1,12 +1,17 @@
+
 "use client";
 
 import Link from "next/link";
-import { Menu, LogIn } from "lucide-react";
+import { Menu, LogIn, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Logo } from "./logo";
+import { useAuth } from "@/hooks/use-auth";
+import { auth } from "@/lib/firebase";
+import { signOut } from "firebase/auth";
+import { useToast } from "@/hooks/use-toast";
 
 const navLinks = [
     { href: "/explore", label: "Explore", isButton: true },
@@ -19,6 +24,24 @@ const navLinks = [
 
 export function Header() {
     const pathname = usePathname();
+    const { user } = useAuth();
+    const { toast } = useToast();
+
+    const handleSignOut = async () => {
+        try {
+            await signOut(auth);
+            toast({
+                title: "Signed Out",
+                description: "You have been successfully signed out.",
+            });
+        } catch (error) {
+            toast({
+                title: "Error",
+                description: "Failed to sign out. Please try again.",
+                variant: "destructive",
+            });
+        }
+    };
 
     return (
         <header className="sticky top-0 z-50 flex h-16 items-center justify-between border-b bg-background/80 px-4 backdrop-blur-sm md:px-6">
@@ -56,12 +79,19 @@ export function Header() {
                         Pre-launch Sign-up
                     </a>
                 </Button>
+                {user ? (
+                    <Button variant="ghost" onClick={handleSignOut}>
+                        <LogOut className="mr-2 h-4 w-4" />
+                        Logout
+                    </Button>
+                ) : (
                  <Button asChild variant="ghost">
                     <Link href="/login">
                         <LogIn className="mr-2 h-4 w-4" />
                         Login
                     </Link>
                  </Button>
+                )}
                 <Sheet>
                     <SheetTrigger asChild>
                         <Button variant="outline" size="icon" className="lg:hidden">
@@ -92,12 +122,19 @@ export function Header() {
                                     Pre-launch Sign-up
                                 </a>
                             </Button>
-                             <Button asChild className="mt-2" variant="outline">
-                                <Link href="/login">
-                                   <LogIn className="mr-2 h-4 w-4" />
-                                    Login / Sign Up
-                                </Link>
-                            </Button>
+                             {user ? (
+                                <Button className="mt-2" variant="outline" onClick={handleSignOut}>
+                                    <LogOut className="mr-2 h-4 w-4" />
+                                    Logout
+                                </Button>
+                             ) : (
+                                <Button asChild className="mt-2" variant="outline">
+                                    <Link href="/login">
+                                    <LogIn className="mr-2 h-4 w-4" />
+                                        Login / Sign Up
+                                    </Link>
+                                </Button>
+                             )}
                         </div>
                     </SheetContent>
                 </Sheet>
