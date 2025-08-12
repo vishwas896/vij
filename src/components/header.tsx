@@ -8,12 +8,12 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
-    { href: "/explore", label: "Explore" },
-    { href: "/jobs", label: "Job Board" },
-    { href: "/services", label: "Services" },
+    { href: "/explore", label: "Explore", isButton: true },
+    { href: "/jobs", label: "Job Board", isButton: true },
+    { href: "/services", label: "Services", isButton: true },
     { href: "/housing", label: "Housing" },
     { href: "/resume-builder", label: "AI Resume Builder" },
-    { href: "/contribution", label: "Contribution" },
+    { href: "/contribution", label: "Contribution", isButton: true },
 ];
 
 export function Header() {
@@ -25,8 +25,17 @@ export function Header() {
                 <Mountain className="h-6 w-6 text-primary" />
                 <span className="text-xl font-bold text-primary font-headline">VIJ</span>
             </Link>
-            <nav className="hidden items-center gap-6 text-sm font-medium lg:flex">
+            <nav className="hidden items-center gap-4 text-sm font-medium lg:flex">
                 {navLinks.map(link => (
+                    link.isButton ? (
+                        <Button key={link.href} asChild variant={pathname === link.href ? "default" : "outline"} size="sm">
+                             <Link
+                                href={link.href}
+                            >
+                                {link.label}
+                            </Link>
+                        </Button>
+                    ) : (
                     <Link
                         key={link.href}
                         href={link.href}
@@ -37,6 +46,7 @@ export function Header() {
                     >
                         {link.label}
                     </Link>
+                    )
                 ))}
             </nav>
             <div className="flex items-center gap-4">
