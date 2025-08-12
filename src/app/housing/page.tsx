@@ -1,7 +1,10 @@
+"use client";
+
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Home, MapPin, BedDouble, Bath, Utensils, Box } from "lucide-react";
+import { Home, MapPin, BedDouble, Utensils, Box } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Label } from "@/components/ui/label";
@@ -13,7 +16,7 @@ const mockListings = [
         title: "Co-living Space for Changemakers",
         location: "Brooklyn, NY",
         price: "$1,200/month",
-        category: "Shared Room",
+        category: "Room",
         details: "2 Bed, 2 Bath",
         imageUrl: "https://placehold.co/600x400.png?1",
         aiHint: "modern apartment",
@@ -33,7 +36,7 @@ const mockListings = [
         title: "Quiet Studio Near Downtown",
         location: "Portland, OR",
         price: "$950/month",
-        category: "Studio",
+        category: "Room", // Changed for filtering
         details: "1 Bed, 1 Bath",
         imageUrl: "https://placehold.co/600x400.png?2",
         aiHint: "cozy studio",
@@ -53,7 +56,7 @@ const mockListings = [
         title: "Affordable Room in Group House",
         location: "Oakland, CA",
         price: "$800/month",
-        category: "Private Room",
+        category: "Room", // Changed for filtering
         details: "4 Bed, 2 Bath",
         imageUrl: "https://placehold.co/600x400.png?3",
         aiHint: "suburban house",
@@ -71,7 +74,36 @@ const mockListings = [
     },
 ];
 
+const categories = ["Room", "PG", "Catering", "Lunch Box", "Tiffin Service"];
+
+
 export default function HousingPage() {
+    const [filteredListings, setFilteredListings] = useState(mockListings);
+    const [locationFilter, setLocationFilter] = useState("");
+    const [categoryFilters, setCategoryFilters] = useState<string[]>([]);
+
+    const handleCategoryChange = (category: string, checked: boolean | "indeterminate") => {
+        if (checked) {
+            setCategoryFilters(prev => [...prev, category]);
+        } else {
+            setCategoryFilters(prev => prev.filter(c => c !== category));
+        }
+    };
+
+    const applyFilters = () => {
+        let listings = mockListings;
+
+        if (locationFilter) {
+            listings = listings.filter(item => item.location.toLowerCase().includes(locationFilter.toLowerCase()));
+        }
+
+        if (categoryFilters.length > 0) {
+            listings = listings.filter(item => categoryFilters.includes(item.category));
+        }
+
+        setFilteredListings(listings);
+    };
+
     return (
         <div className="container mx-auto px-4 py-12 md:px-6">
             <div className="flex flex-col items-center justify-between gap-4 text-center mb-12 md:flex-row md:text-left">
@@ -95,39 +127,34 @@ export default function HousingPage() {
                             <div>
                                 <Label className="font-semibold">Category</Label>
                                 <div className="space-y-2 mt-2">
-                                    <div className="flex items-center space-x-2">
-                                        <Checkbox id="room" />
-                                        <Label htmlFor="room">Room</Label>
-                                    </div>
-                                    <div className="flex items-center space-x-2">
-                                        <Checkbox id="pg" />
-                                        <Label htmlFor="pg">PG</Label>
-                                    </div>
-                                    <div className="flex items-center space-x-2">
-                                        <Checkbox id="catering" />
-                                        <Label htmlFor="catering">Catering</Label>
-                                    </div>
-                                    <div className="flex items-center space-x-2">
-                                        <Checkbox id="lunch-box" />
-                                        <Label htmlFor="lunch-box">Lunch Box</Label>
-                                    </div>
-                                    <div className="flex items-center space-x-2">
-                                        <Checkbox id="tiffin-service" />
-                                        <Label htmlFor="tiffin-service">Tiffin Service</Label>
-                                    </div>
+                                    {categories.map(category => (
+                                         <div key={category} className="flex items-center space-x-2">
+                                            <Checkbox 
+                                                id={category.toLowerCase().replace(' ', '-')} 
+                                                onCheckedChange={(checked) => handleCategoryChange(category, checked)}
+                                            />
+                                            <Label htmlFor={category.toLowerCase().replace(' ', '-')}>{category}</Label>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
                             <div>
                                 <Label htmlFor="location" className="font-semibold">Location</Label>
-                                <Input id="location" placeholder="e.g., Brooklyn, NY" className="mt-2" />
+                                <Input 
+                                    id="location" 
+                                    placeholder="e.g., Brooklyn, NY" 
+                                    className="mt-2" 
+                                    value={locationFilter}
+                                    onChange={(e) => setLocationFilter(e.target.value)}
+                                />
                             </div>
-                            <Button className="w-full">Apply Filters</Button>
+                            <Button className="w-full" onClick={applyFilters}>Apply Filters</Button>
                         </CardContent>
                     </Card>
                 </aside>
                 <main className="md:col-span-3">
                     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                        {mockListings.map((item, index) => (
+                        {filteredListings.length > 0 ? filteredListings.map((item, index) => (
                             <Card key={index} className="flex flex-col overflow-hidden group hover:shadow-xl transition-shadow duration-300">
                                  <CardHeader className="p-0">
                                     <Image
@@ -158,7 +185,9 @@ export default function HousingPage() {
                                     </Button>
                                 </CardFooter>
                             </Card>
-                        ))}
+                        )) : (
+                            <p>No listings found matching your criteria.</p>
+                        )}
                     </div>
                 </main>
             </div>
