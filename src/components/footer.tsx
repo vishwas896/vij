@@ -39,7 +39,7 @@ export function Footer() {
                     <p className="text-sm text-muted-foreground">&copy; {new Date().getFullYear()} VIJ. All rights reserved.</p>
                     <div className="flex items-center gap-4">
                         <Link href="#" aria-label="Twitter"><Twitter className="h-5 w-5 text-muted-foreground hover:text-primary transition-colors" /></Link>
-                        <Link href="#" aria-label="LinkedIn"><Linkedin className="h-5 w-5 text-muted-foreground hover:text-primary transition-colors" /></Link>
+                        <Link href="https://www.linkedin.com/company/vij-bp/" aria-label="LinkedIn"><Linkedin className="h-5 w-5 text-muted-foreground hover:text-primary transition-colors" /></Link>
                         <Link href="#" aria-label="Facebook"><Facebook className="h-5 w-5 text-muted-foreground hover:text-primary transition-colors" /></Link>
                     </div>
                 </div>
