@@ -16,7 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, LogIn, Mail, Lock, UserPlus, Phone, MessageCircle } from "lucide-react";
+import { Loader2, LogIn, Mail, Lock, UserPlus } from "lucide-react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import Link from "next/link";
 import { auth, googleProvider } from "@/lib/firebase";
@@ -24,9 +24,6 @@ import {
     createUserWithEmailAndPassword, 
     signInWithEmailAndPassword,
     signInWithPopup,
-    // RecaptchaVerifier, // Removed
-    // signInWithPhoneNumber, // Removed
-    // ConfirmationResult // Removed
 } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { Separator } from "./ui/separator";
@@ -51,10 +48,6 @@ type SignupSchema = z.infer<typeof signupSchema>;
 
 export function AuthForm({ isSignup = false }: { isSignup?: boolean }) {
     const [isPending, startTransition] = useTransition();
-    const [isPhoneAuth, setIsPhoneAuth] = useState(false);
-    // const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult | null>(null); // Removed
-    // const [otp, setOtp] = useState(""); // Removed
-    // const [phoneNumber, setPhoneNumber] = useState(""); // Removed
     const { toast } = useToast();
     const router = useRouter();
 
@@ -66,8 +59,6 @@ export function AuthForm({ isSignup = false }: { isSignup?: boolean }) {
             ...(isSignup && { confirmPassword: "" }),
         },
     });
-
-    // Removed useEffect for RecaptchaVerifier
 
     const handleGoogleSignIn = async () => {
         startTransition(async () => {
@@ -88,8 +79,6 @@ export function AuthForm({ isSignup = false }: { isSignup?: boolean }) {
         })
     }
     
-    // Removed handlePhoneSignIn and handleOtpVerify
-
     function onEmailSubmit(values: LoginSchema | SignupSchema) {
         startTransition(async () => {
            try {
@@ -138,7 +127,6 @@ export function AuthForm({ isSignup = false }: { isSignup?: boolean }) {
                         {isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <GoogleIcon />}
                         Continue with Google
                     </Button>
-                    <div id="recaptcha-container"></div>
                 </div>
 
                 <div className="my-4 flex items-center">
@@ -147,35 +135,41 @@ export function AuthForm({ isSignup = false }: { isSignup?: boolean }) {
                     <Separator className="flex-1" />
                 </div>
                  
-                 {isPhoneAuth ? (
-                    <div className="space-y-4">
-                        <div className="text-center p-4 bg-yellow-50 border border-yellow-200 rounded-md">
-                            <p className="text-sm text-yellow-800">Phone sign-in is temporarily disabled.</p>
-                        </div>
-                        <Button variant="link" size="sm" onClick={() => setIsPhoneAuth(false)}>Use Email/Password instead</Button>
-                    </div>
-                 ) : (
-                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onEmailSubmit)} className="space-y-4">
+                 <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onEmailSubmit)} className="space-y-4">
+                         <FormField
+                            control={form.control}
+                            name="email"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="flex items-center"><Mail className="mr-2 h-4 w-4" />Email</FormLabel>
+                                    <FormControl>
+                                        <Input type="email" placeholder="e.g. you@example.com" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                         <FormField
+                            control={form.control}
+                            name="password"
+                            render={({ field }) => (
+                                <FormItem>
+                                     <FormLabel className="flex items-center"><Lock className="mr-2 h-4 w-4" />Password</FormLabel>
+                                    <FormControl>
+                                        <Input type="password" placeholder="••••••••" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                         {isSignup && 'confirmPassword' in form.getValues() && (
                              <FormField
                                 control={form.control}
-                                name="email"
+                                name="confirmPassword"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className="flex items-center"><Mail className="mr-2 h-4 w-4" />Email</FormLabel>
-                                        <FormControl>
-                                            <Input type="email" placeholder="e.g. you@example.com" {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                             <FormField
-                                control={form.control}
-                                name="password"
-                                render={({ field }) => (
-                                    <FormItem>
-                                         <FormLabel className="flex items-center"><Lock className="mr-2 h-4 w-4" />Password</FormLabel>
+                                         <FormLabel className="flex items-center"><Lock className="mr-2 h-4 w-4" />Confirm Password</FormLabel>
                                         <FormControl>
                                             <Input type="password" placeholder="••••••••" {...field} />
                                         </FormControl>
@@ -183,38 +177,22 @@ export function AuthForm({ isSignup = false }: { isSignup?: boolean }) {
                                     </FormItem>
                                 )}
                             />
-                             {isSignup && 'confirmPassword' in form.getValues() && (
-                                 <FormField
-                                    control={form.control}
-                                    name="confirmPassword"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                             <FormLabel className="flex items-center"><Lock className="mr-2 h-4 w-4" />Confirm Password</FormLabel>
-                                            <FormControl>
-                                                <Input type="password" placeholder="••••••••" {...field} />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
+                        )}
+                         <Button type="submit" disabled={isPending} className="w-full">
+                            {isPending ? (
+                                <>
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    {isSignup ? "Creating Account..." : "Signing In..."}
+                                </>
+                            ) : (
+                                <>
+                                 {isSignup ? <UserPlus className="mr-2 h-4 w-4" /> : <LogIn className="mr-2 h-4 w-4" />}
+                                 {isSignup ? "Create Account" : "Sign In"}
+                                </>
                             )}
-                             <Button type="submit" disabled={isPending} className="w-full">
-                                {isPending ? (
-                                    <>
-                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                        {isSignup ? "Creating Account..." : "Signing In..."}
-                                    </>
-                                ) : (
-                                    <>
-                                     {isSignup ? <UserPlus className="mr-2 h-4 w-4" /> : <LogIn className="mr-2 h-4 w-4" />}
-                                     {isSignup ? "Create Account" : "Sign In"}
-                                    </>
-                                )}
-                            </Button>
-                            <Button variant="link" size="sm" onClick={() => setIsPhoneAuth(true)}>Use Phone instead</Button>
-                        </form>
-                    </Form>
-                 )}
+                        </Button>
+                    </form>
+                </Form>
             </CardContent>
             <CardFooter className="flex flex-col gap-4">
                  <div className="text-sm text-muted-foreground">
