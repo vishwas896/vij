@@ -34,12 +34,15 @@ const signupSchema = z.object({
     path: ["confirmPassword"],
 });
 
+type LoginSchema = z.infer<typeof loginSchema>;
+type SignupSchema = z.infer<typeof signupSchema>;
+
 
 export function AuthForm({ isSignup = false }: { isSignup?: boolean }) {
     const [isPending, startTransition] = useTransition();
     const { toast } = useToast();
 
-    const form = useForm<z.infer<typeof (isSignup ? signupSchema : loginSchema)>>({
+    const form = useForm<LoginSchema | SignupSchema>({
         resolver: zodResolver(isSignup ? signupSchema : loginSchema),
         defaultValues: {
             email: "",
@@ -48,7 +51,7 @@ export function AuthForm({ isSignup = false }: { isSignup?: boolean }) {
         },
     });
 
-    function onSubmit(values: z.infer<typeof (isSignup ? signupSchema : loginSchema)>) {
+    function onSubmit(values: LoginSchema | SignupSchema) {
         startTransition(async () => {
             // Placeholder for authentication logic
             toast({
